@@ -29,7 +29,7 @@ jobs:
       run: npm install
 
     - name: Build application
-      run: npm run build  # Ensure you have a build script in package.json
+      run: pm2 start index.js  # Ensure you have a build script in package.json
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
