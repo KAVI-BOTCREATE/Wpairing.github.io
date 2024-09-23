@@ -1,30 +1,33 @@
-name: Deploy to GitHub Pages
+name: Node.js CI
 
 on:
   push:
     branches:
-      - main  # Main branch එකට push වීමේදී deploy කරන්න
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [20.x]
+
     steps:
-    - name: Checkout the repository
-      uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
       with:
-        node-version: '16' # NodeJS version එක
+        node-version: ${{ matrix.node-version }}
 
-    - name: Install dependencies and build
-      run: |
-        npm install
-        npm run build  # build command එක
+    - name: Install dependencies
+      run: npm install
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist  # build output folder
+    - name: Start application
+      run: npm start
