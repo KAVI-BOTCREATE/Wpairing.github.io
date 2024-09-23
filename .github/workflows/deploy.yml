@@ -10,7 +10,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -29,5 +28,11 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Start application
-      run: npm start
+    - name: Build application
+      run: npm run build  # Ensure you have a build script in package.json
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist  # Adjust this to your build output directory
